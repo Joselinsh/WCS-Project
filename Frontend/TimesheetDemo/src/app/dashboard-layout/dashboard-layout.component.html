@@ -1,0 +1,73 @@
+<div class="min-h-screen flex">
+    <div class="w-64 bg-zoho-blue text-white p-4 flex flex-col justify-between">
+      <div>
+        <h1 class="text-2xl font-bold mb-6">Timesheet</h1>
+        <nav>
+          <ul>
+            <li class="mb-2" *ngIf="authService.getRole() === 'Employee'">
+              <a routerLink="/employee/home" routerLinkActive="bg-zoho-blue-dark" class="block p-2 rounded hover:bg-zoho-blue-dark">
+                Dashboard
+              </a>
+            </li>
+            <li class="mb-2" *ngIf="authService.getRole() === 'Employee'">
+              <a routerLink="/employee/profile" routerLinkActive="bg-zoho-blue-dark" class="block p-2 rounded hover:bg-zoho-blue-dark">
+                Profile
+              </a>
+            </li>
+            <li class="mb-2" *ngIf="authService.getRole() === 'Employee'">
+              <a routerLink="/employee/timesheets" routerLinkActive="bg-zoho-blue-dark" class="block p-2 rounded hover:bg-zoho-blue-dark">
+                Timesheets
+              </a>
+            </li>
+            <li class="mb-2" *ngIf="authService.getRole() === 'Employee'">
+              <a routerLink="/employee/leaves" routerLinkActive="bg-zoho-blue-dark" class="block p-2 rounded hover:bg-zoho-blue-dark">
+                Leaves
+              </a>
+            </li>
+            <li class="mb-2" *ngIf="authService.getRole() === 'HR'">
+              <a routerLink="/hr/dashboard" routerLinkActive="bg-zoho-blue-dark" class="block p-2 rounded hover:bg-zoho-blue-dark">
+                HR Dashboard
+              </a>
+            </li>
+            <li class="mb-2" *ngIf="authService.getRole() === 'Admin'">
+              <a routerLink="/admin/dashboard" routerLinkActive="bg-zoho-blue-dark" class="block p-2 rounded hover:bg-zoho-blue-dark">
+                Admin Dashboard
+              </a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div>
+        <button (click)="logout()" class="w-full bg-red-500 hover:bg-red-600 text-white p-2 rounded">
+          Logout
+        </button>
+      </div>
+    </div>
+  
+    <div class="flex-1 bg-gray-100 dark:bg-gray-900">
+
+      <header class="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center">
+        <h2 class="text-xl font-semibold text-zoho-dark-gray dark:text-white">
+          {{ authService.getRole() === 'HR' ? 'HR Dashboard' : authService.getRole() === 'Admin' ? 'Admin Dashboard' : 'Employee Dashboard' }}
+        </h2>
+        <div class="flex items-center space-x-4">
+          <button (click)="toggleDarkMode()" class="text-zoho-dark-gray dark:text-gray-300 hover:text-zoho-blue">
+            {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
+          </button>
+          <div class="relative">
+            <button (click)="toggleDropdown()" class="text-zoho-dark-gray dark:text-gray-300 hover:text-zoho-blue">
+              Profile
+            </button>
+            <div *ngIf="isDropdownOpen" class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg z-10">
+              <a routerLink="/employee/profile" class="block px-4 py-2 text-zoho-dark-gray dark:text-gray-300 hover:bg-zoho-blue/10">View Profile</a>
+              <button (click)="logout()" class="block w-full text-left px-4 py-2 text-zoho-dark-gray dark:text-gray-300 hover:bg-zoho-blue/10">Logout</button>
+            </div>
+          </div>
+        </div>
+      </header>
+  
+      <main class="p-6">
+        <router-outlet></router-outlet>
+      </main>
+    </div>
+  </div>

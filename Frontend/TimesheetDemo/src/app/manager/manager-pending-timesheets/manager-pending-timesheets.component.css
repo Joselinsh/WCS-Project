@@ -1,0 +1,55 @@
+/* Ensure the container respects Tailwind classes */
+.bg-white {
+    background-color: #fff !important;
+  }
+  
+  .dark .bg-white {
+    background-color: #1f2937 !important; /* Tailwind's gray-800 */
+  }
+  
+  /* Table-specific styles */
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #fff !important; /* Force white background in light mode */
+  }
+  
+  .dark table {
+    background-color: #1f2937 !important; /* Force gray-800 background in dark mode */
+  }
+  
+  th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    color: #000; /* Readable text in light mode */
+  }
+  
+  .dark th, .dark td {
+    color: #fff; /* Readable text in dark mode */
+    border-bottom: 1px solid #4b5563; /* Lighter border for dark mode */
+  }
+  
+  th {
+    background-color: #f2f2f2; /* Light gray header in light mode */
+  }
+  
+  .dark th {
+    background-color: #374151; /* Darker header in dark mode (Tailwind's gray-700) */
+  }
+  
+  /* Dialog positioning */
+  .cdk-overlay-container .custom-dialog-container.cdk-overlay-pane {
+    position: fixed !important;
+    top: 5vh !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 1500 !important;
+    max-width: 500px !important;
+    width: 90% !important;
+    margin: 0 !important;
+  }
+  
+  .cdk-overlay-container .cdk-overlay-backdrop {
+    z-index: 1400 !important;
+  }

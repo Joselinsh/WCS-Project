@@ -1,0 +1,78 @@
+# Ignore Git and GitHub directories
+.git/
+.github/
+ 
+# Ignore Visual Studio and VS Code user settings
+.vscode/
+.vs/
+BusReservation/BusAppSolution/.vs/
+ 
+# Ignore bin and obj folders in any subdirectory (for .NET)
+**/bin/
+**/obj/
+**/packages/
+**/TestResults/
+**/publish/
+**/out/
+ 
+# Ignore OS-specific files
+Thumbs.db
+.DS_Store
+ 
+# Ignore backup and temporary files
+*.bak
+*.tmp
+ 
+ 
+ 
+# Ignore Angular-specific IDE/editor files
+Frontend/TimesheetHR/.history/
+Frontend/TimesheetHR/.sass-cache/
+Frontend/TimesheetHR/connect.lock
+Frontend/TimesheetHR/.c9/
+Frontend/TimesheetHR/.project
+Frontend/TimesheetHR/.classpath
+Frontend/TimesheetHR/*.launch
+Frontend/TimesheetHR/.settings/
+Frontend/TimesheetHR/*.sublime-workspace
+ 
+# Ignore sensitive configuration files
+Frontend/appsettings*.json
+ 
+ 
+# Ignore logs
+**/*.log
+Frontend/TimesheetHR/npm-debug.log*
+Frontend/TimesheetHR/yarn-error.log
+ 
+# Ignore Angular environment files (use environment.example.ts instead)
+Frontend/TimesheetHR/src/environments/environment.ts
+Frontend/TimesheetHR/src/environments/environment.prod.ts
+Frontend/TimesheetHR/src/environments/*.local.ts
+ 
+# Ignore Angular test coverage and logs
+Frontend/TimesheetHR/coverage/
+Frontend/TimesheetHR/libpeerconnection.log
+Frontend/TimesheetHR/testem.log
+ 
+# Ignore Angular build and cache outputs
+Frontend/TimesheetHR/dist/
+Frontend/TimesheetHR/tmp/
+Frontend/TimesheetHR/out-tsc/
+Frontend/TimesheetHR/bazel-out/
+Frontend/TimesheetHR/.angular/
+Frontend/TimesheetHR/.idea/
+Frontend/TimesheetHR/.eslintcache
+Frontend/TimesheetHR/.firebase/
+Frontend/TimesheetHR/.turbo/
+ 
+# Ignore node_modules for Angular frontend
+Frontend/TimesheetHR/node_modules/
+ 
+# Ignore Visual Studio files
+Backend/TimesheetSoln/*.user
+Backend/TimesheetSoln/*.suo
+Backend/TimesheetSoln/*.cache
+Backend/TimesheetSoln/*.ldb
+Backend/TimesheetSoln/*.pdb
+ 
