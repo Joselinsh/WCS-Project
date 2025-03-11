@@ -1,0 +1,157 @@
+<div class="p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-zoho-blue/20 dark:border-gray-700/50" [@fadeIn]>
+  <h2 class="text-2xl font-bold text-zoho-dark-gray dark:text-white mb-4">Timesheets</h2>
+
+  <!-- Profile Display -->
+  <div *ngIf="profile" class="profile-card mb-6 p-4 bg-gradient-to-r from-zoho-blue/10 to-white rounded-md text-center shadow-md" [@cardAppear]>
+    <h3 class="text-lg font-semibold">Welcome, {{ profile.fullName }}!</h3>
+    <p>Designation: {{ profile.designation }}</p>
+    <p>Employee ID: {{ profile.employeeId }}</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="flex justify-center">
+    <div class="loader ease-linear rounded-full border-4 border-t-4 border-zoho-blue h-12 w-12"></div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="errorMessage && !isLoading" class="bg-red-500 p-4 rounded-md text-white mb-4 text-center animate-pulse">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Success Message -->
+  <div *ngIf="successMessage && !isLoading" class="bg-green-500 p-4 rounded-md text-white mb-4 text-center animate-pulse">
+    {{ successMessage }}
+  </div>
+
+  <!-- Submit Timesheet Form -->
+  <div *ngIf="!isLoading && !editingTimesheet && !approvingTimesheet && role === 'Employee'" class="mb-6 p-4 bg-white rounded-md shadow-md" [@cardAppear]>
+    <h3 class="text-lg font-semibold text-zoho-dark-gray dark:text-gray-200 mb-4">Submit New Timesheet</h3>
+    <div class="space-y-4">
+      <div>
+        <label class="block text-zoho-dark-gray dark:text-gray-300 font-semibold">Project Name</label>
+        <input [(ngModel)]="newTimesheet.projectName" class="w-full p-2 border border-zoho-blue/20 rounded-md focus:ring-2 focus:ring-zoho-blue dark:bg-gray-700 dark:border-gray-600 dark:text-white" type="text" placeholder="Enter project name" />
+      </div>
+      <div>
+        <label class="block text-zoho-dark-gray dark:text-gray-300 font-semibold">Date</label>
+        <input [(ngModel)]="newTimesheet.date" class="w-full p-2 border border-zoho-blue/20 rounded-md focus:ring-2 focus:ring-zoho-blue dark:bg-gray-700 dark:border-gray-600 dark:text-white" type="date" />
+      </div>
+      <div>
+        <label class="block text-zoho-dark-gray dark:text-gray-300 font-semibold">Hours Worked</label>
+        <input [(ngModel)]="newTimesheet.hoursWorked" class="w-full p-2 border border-zoho-blue/20 rounded-md focus:ring-2 focus:ring-zoho-blue dark:bg-gray-700 dark:border-gray-600 dark:text-white" type="number" min="0" placeholder="Enter hours worked" />
+      </div>
+      <div>
+        <label class="block text-zoho-dark-gray dark:text-gray-300 font-semibold">Description</label>
+        <textarea [(ngModel)]="newTimesheet.description" class="w-full p-2 border border-zoho-blue/20 rounded-md focus:ring-2 focus:ring-zoho-blue dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Enter description (optional)"></textarea>
+      </div>
+      <button (click)="submitTimesheet()" class="bg-zoho-blue text-white p-2 rounded-md hover:bg-zoho-navy transition-all duration-200 shadow-md hover:shadow-lg">Submit Timesheet</button>
+    </div>
+  </div>
+
+  <!-- Edit Timesheet Form -->
+  <div *ngIf="!isLoading && editingTimesheet" class="mb-6 p-4 bg-white rounded-md shadow-md" [@cardAppear]>
+    <h3 class="text-lg font-semibold text-zoho-dark-gray dark:text-gray-200 mb-4">Edit Timesheet</h3>
+    <div class="space-y-4">
+      <div>
+        <label class="block text-zoho-dark-gray dark:text-gray-300 font-semibold">Project Name</label>
+        <input [(ngModel)]="editingTimesheet.projectName" class="w-full p-2 border border-zoho-blue/20 rounded-md focus:ring-2 focus:ring-zoho-blue dark:bg-gray-700 dark:border-gray-600 dark:text-white" type="text" />
+      </div>
+      <div>
+        <label class="block text-zoho-dark-gray dark:text-gray-300 font-semibold">Date</label>
+        <input [(ngModel)]="editingTimesheet.date" class="w-full p-2 border border-zoho-blue/20 rounded-md focus:ring-2 focus:ring-zoho-blue dark:bg-gray-700 dark:border-gray-600 dark:text-white" type="date" />
+      </div>
+      <div>
+        <label class="block text-zoho-dark-gray dark:text-gray-300 font-semibold">Hours Worked</label>
+        <input [(ngModel)]="editingTimesheet.hoursWorked" class="w-full p-2 border border-zoho-blue/20 rounded-md focus:ring-2 focus:ring-zoho-blue dark:bg-gray-700 dark:border-gray-600 dark:text-white" type="number" min="0" />
+      </div>
+      <div>
+        <label class="block text-zoho-dark-gray dark:text-gray-300 font-semibold">Description</label>
+        <textarea [(ngModel)]="editingTimesheet.description" class="w-full p-2 border border-zoho-blue/20 rounded-md focus:ring-2 focus:ring-zoho-blue dark:bg-gray-700 dark:border-gray-600 dark:text-white"></textarea>
+      </div>
+      <div class="flex space-x-4">
+        <button (click)="updateTimesheet()" class="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition-all duration-200 shadow-md hover:shadow-lg">Save Changes</button>
+        <button (click)="cancelEdit()" class="bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600 transition-all duration-200 shadow-md hover:shadow-lg">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Approve Timesheet Form -->
+  <div *ngIf="!isLoading && approvingTimesheet && (role === 'Manager' || role === 'HR')" class="mb-6 p-4 bg-white rounded-md shadow-md" [@cardAppear]>
+    <h3 class="text-lg font-semibold text-zoho-dark-gray dark:text-gray-200 mb-4">Approve Timesheet</h3>
+    <div class="space-y-4">
+      <p>Project: {{ approvingTimesheet.projectName }}</p>
+      <p>Date: {{ approvingTimesheet.date | date:'shortDate' }}</p>
+      <p>Hours: {{ approvingTimesheet.hoursWorked }}</p>
+      <p>Description: {{ approvingTimesheet.description || 'N/A' }}</p>
+      <div>
+        <label class="block text-zoho-dark-gray dark:text-gray-300 font-semibold">Comments</label>
+        <textarea [(ngModel)]="approvalComments" class="w-full p-2 border border-zoho-blue/20 rounded-md focus:ring-2 focus:ring-zoho-blue dark:bg-gray-700 dark:border-gray-600 dark:text-white" placeholder="Add comments"></textarea>
+      </div>
+      <div class="flex space-x-4">
+        <button (click)="approveTimesheet(true)" class="bg-green-500 text-white p-2 rounded-md hover:bg-green-600 transition-all duration-200 shadow-md hover:shadow-lg">Approve</button>
+        <button (click)="approveTimesheet(false)" class="bg-red-500 text-white p-2 rounded-md hover:bg-red-600 transition-all duration-200 shadow-md hover:shadow-lg">Reject</button>
+        <button (click)="cancelApproval()" class="bg-gray-500 text-white p-2 rounded-md hover:bg-gray-600 transition-all duration-200 shadow-md hover:shadow-lg">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toggle Button for Viewing Timesheets -->
+  <div class="mb-6 text-center">
+    <button (click)="toggleTimesheets()" class="view-timesheet-btn bg-gradient-to-r from-zoho-blue to-zoho-navy text-white p-3 rounded-md hover:from-zoho-navy hover:to-zoho-blue transition-all duration-300 shadow-lg flex items-center justify-center mx-auto">
+      <span class="mr-2">{{ showTimesheets ? 'Hide My Timesheets' : 'View My Timesheets' }}</span>
+      <svg [ngClass]="{'rotate-180': showTimesheets}" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Timesheets List (Toggled) -->
+  <div *ngIf="showTimesheets && !isLoading && timesheets.length > 0" class="overflow-x-auto" [@slideInOut]>
+    <h3 class="text-lg font-semibold text-zoho-dark-gray dark:text-gray-200 mb-4">Your Timesheets</h3>
+    <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg shadow-md">
+      <thead>
+        <tr class="bg-gradient-to-r from-zoho-blue to-zoho-navy text-white">
+          <th class="py-3 px-4 text-left font-semibold">Project Name</th>
+          <th class="py-3 px-4 text-left font-semibold">Date</th>
+          <th class="py-3 px-4 text-left font-semibold">Hours</th>
+          <th class="py-3 px-4 text-left font-semibold">Description</th>
+          <th class="py-3 px-4 text-left font-semibold">Status</th>
+          <th class="py-3 px-4 text-left font-semibold">Manager Comments</th>
+          <th class="py-3 px-4 text-left font-semibold">HR Comments</th>
+          <th class="py-3 px-4 text-left font-semibold">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let timesheet of timesheets" class="border-t border-zoho-blue/20 dark:border-gray-700 hover:bg-zoho-blue/5 transition-colors" [@cardAppear]>
+          <td class="py-3 px-4 text-gray-600 dark:text-gray-400">{{ timesheet.projectName }}</td>
+          <td class="py-3 px-4 text-gray-600 dark:text-gray-400">{{ timesheet.date | date:'shortDate' }}</td>
+          <td class="py-3 px-4 text-gray-600 dark:text-gray-400">{{ timesheet.hoursWorked }}</td>
+          <td class="py-3 px-4 text-gray-600 dark:text-gray-400">{{ timesheet.description || 'N/A' }}</td>
+          <td class="py-3 px-4 text-gray-600 dark:text-gray-400">{{ timesheet.status }}</td>
+          <td class="py-3 px-4 text-gray-600 dark:text-gray-400">{{ timesheet.managerComments || 'N/A' }}</td>
+          <td class="py-3 px-4 text-gray-600 dark:text-gray-400">{{ timesheet.hrComments || 'N/A' }}</td>
+          <td class="py-3 px-4">
+            <button *ngIf="timesheet.status === 'Pending' && role === 'Employee'" (click)="startEditing(timesheet)" class="text-zoho-blue hover:text-zoho-navy mr-2">Edit</button>
+            <button *ngIf="timesheet.status === 'Pending' && role === 'Employee'" (click)="deleteTimesheet(timesheet.timesheetId)" class="text-red-500 hover:text-red-600">Delete</button>
+            <button *ngIf="(timesheet.status === 'Pending' || timesheet.status === 'ManagerApproved') && (role === 'Manager' || role === 'HR')" (click)="startApproval(timesheet)" class="text-green-500 hover:text-green-600 ml-2">Approve/Reject</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- No Timesheets Message -->
+  <div *ngIf="showTimesheets && !isLoading && timesheets.length === 0" class="text-center text-gray-600 dark:text-gray-400 animate-pulse" [@fadeIn]>
+    No timesheets found. Submit a new timesheet to get started!
+  </div>
+
+  <style>
+    .loader {
+      border-top-color: transparent;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</div>

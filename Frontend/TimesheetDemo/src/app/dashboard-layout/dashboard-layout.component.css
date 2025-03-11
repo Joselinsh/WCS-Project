@@ -1,0 +1,24 @@
+/* Tailwind-like classes */
+.bg-zoho-blue {
+    background-color: #007bb8;
+  }
+  
+  .bg-zoho-blue-dark {
+    background-color: #005f8f;
+  }
+  
+  .text-zoho-dark-gray {
+    color: #2d3748;
+  }
+  
+  .bg-zoho-error {
+    background-color: #e53e3e;
+  }
+  
+  .dark .bg-zoho-blue-dark {
+    background-color: #003f5c;
+  }
+  
+  .dark .text-zoho-dark-gray {
+    color: #e2e8f0;
+  }
